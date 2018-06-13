@@ -100,5 +100,9 @@ module Fluent
 
       gelfentry.to_json + ( conf.is_a?(Hash) and conf.key?(:record_separator) ? conf[:record_separator] : "\0" )
     end
+
+    def blank?
+      /\A[[:space:]]*\z/ === self
+    end
   end
 end
