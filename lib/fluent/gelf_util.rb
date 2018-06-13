@@ -67,15 +67,15 @@ module Fluent
         end
       end
 
-      if !gelfentry.key?('short_message') or gelfentry['short_message'].to_s.empty? then
+      if !gelfentry.key?('short_message') or gelfentry['short_message'].to_s.blank? then
         # allow other non-empty fields to masquerade as the short_message if it is unset
-        if gelfentry.key?('_message') and !gelfentry['_message'].to_s.empty? then
+        if gelfentry.key?('_message') and !gelfentry['_message'].to_s.blank? then
           gelfentry['short_message'] = gelfentry.delete('_message')
-        elsif gelfentry.key?('_msg') and !gelfentry['_msg'].to_s.empty? then
+        elsif gelfentry.key?('_msg') and !gelfentry['_msg'].to_s.blank? then
           gelfentry['short_message'] = gelfentry.delete('_msg')
-        elsif gelfentry.key?('_log') and !gelfentry['_log'].to_s.empty? then
+        elsif gelfentry.key?('_log') and !gelfentry['_log'].to_s.blank? then
           gelfentry['short_message'] = gelfentry.delete('_log')
-        elsif gelfentry.key?('_record') and !gelfentry['_record'].to_s.empty? then
+        elsif gelfentry.key?('_record') and !gelfentry['_record'].to_s.blank? then
           gelfentry['short_message'] = gelfentry.delete('_record')
         else
           # we must have a short_message, so provide placeholder
