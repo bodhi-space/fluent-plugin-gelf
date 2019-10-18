@@ -31,15 +31,79 @@ class GELFOutputTest < Test::Unit::TestCase
   def test_format
     d = create_driver
     time = Time.now
-    d.emit({"message" => "gelf"}, time.to_i)
+    d.emit({'message' => 'gelf'}, time.to_i)
     d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, 'short_message' => 'gelf'}.to_msgpack)
+    d.run
+  end
+
+  def test_format_msg
+    d = create_driver
+    time = Time.now
+    d.emit({'_msg' => 'mymessage'}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, 'short_message' => 'mymessage'}.to_msgpack)
+    d.run
+  end
+
+  def test_format_log
+    d = create_driver
+    time = Time.now
+    d.emit({'_log' => 'mylog'}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, 'short_message' => 'mylog'}.to_msgpack)
+    d.run
+  end
+
+  def test_format_record
+    d = create_driver
+    time = Time.now
+    d.emit({'_record' => 'myrecord'}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, 'short_message' => 'myrecord'}.to_msgpack)
+    d.run
+  end
+
+  def test_empty_short_message
+    d = create_driver
+    time = Time.now
+    d.emit({'short_message' => "\n\r \n"}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, 'short_message' => '(no message)'}.to_msgpack)
+    d.run
+  end
+
+  def test_empty_message
+    d = create_driver
+    time = Time.now
+    d.emit({'_message' => "\n\r \n"}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, '_message' => "\n\r \n", 'short_message' => '(no message)'}.to_msgpack)
+    d.run
+  end
+
+  def test_empty_msg
+    d = create_driver
+    time = Time.now
+    d.emit({'_msg' => "\n\r \n"}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, '_msg' => "\n\r \n", 'short_message' => '(no message)'}.to_msgpack)
+    d.run
+  end
+
+  def test_empty_log
+    d = create_driver
+    time = Time.now
+    d.emit({'_log' => "\n\r \n"}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, '_log' => "\n\r \n", 'short_message' => '(no message)'}.to_msgpack)
+    d.run
+  end
+
+  def test_empty_record
+    d = create_driver
+    time = Time.now
+    d.emit({'_record' => "\n\r \n"}, time.to_i)
+    d.expect_format({'_tag' => 'test', 'timestamp' => time.to_i, '_record' => "\n\r \n", 'short_message' => '(no message)'}.to_msgpack)
     d.run
   end
 
   def test_write
     d = create_driver
     time = Time.now
-    d.emit({"message" => "gelf"}, time.to_i)
+    d.emit({'message' => 'gelf'}, time.to_i)
     d.run
   end
 end
