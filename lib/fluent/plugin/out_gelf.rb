@@ -101,6 +101,10 @@ module Fluent
     def formatted_to_msgpack_binary
       true
     end
+      
+    def multi_workers_ready?
+        true
+      end
   end
 
 end
