@@ -94,7 +94,7 @@ module Fluent
 
       gelfentry.each_pair  do |k,v|
         if v.is_a?(String)
-          gelfentry[k] = v.force_encoding('UTF-8')
+          gelfentry[k] = v.dup.force_encoding('UTF-8')
         end
       end
 
